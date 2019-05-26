@@ -8,9 +8,9 @@ def code_categorical_features(categorical_columns: List[str], dataframe: DataFra
     category_names = {}
     for category in categorical_columns:
         mylist = []
-        subcategory_names = {'null':-1}
+        subcategory_names = {'null': -1}
         for cat, index in enumerate(dataframe[category].cat.categories):
-            subcategory_names[index] =  cat
+            subcategory_names[index] = cat
         mylist.append(subcategory_names)
         category_names[category] = mylist
         dataframe[category] = dataframe[category].cat.codes

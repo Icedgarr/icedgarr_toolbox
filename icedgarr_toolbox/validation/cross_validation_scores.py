@@ -8,7 +8,7 @@ from sklearn.model_selection import BaseCrossValidator
 
 
 def stratified_cross_validation(data: pd.DataFrame, splitter: BaseCrossValidator, estimator,
-                                metric: Callable[np.array, np.array], feature_columns: List[str],
+                                metric: Callable[[np.array, np.array], Number], feature_columns: List[str],
                                 target_column: List[str]) -> (List[Number], List[DataFrame]):
     scores = []
     predictions = []
