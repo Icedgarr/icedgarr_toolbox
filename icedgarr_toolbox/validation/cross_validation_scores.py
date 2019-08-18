@@ -12,6 +12,7 @@ def stratified_cross_validation(data: pd.DataFrame, splitter: BaseCrossValidator
                                 target_column: List[str]) -> (List[Number], List[DataFrame]):
     scores = []
     predictions = []
+    data_test = []
     for train_id, test_id in splitter.split(data, data[target_column]):
         train_x, train_y = data.loc[train_id, feature_columns], data.loc[train_id, target_column]
 
@@ -19,9 +20,12 @@ def stratified_cross_validation(data: pd.DataFrame, splitter: BaseCrossValidator
 
         estimator.fit(train_x, train_y)
         predicted_values = estimator.predict(test_x)
+        predicted_probabilities = estimator.predict_proba(test_x)[:, 1]
         scores.append(metric(test_y, predicted_values))
-        predictions_dataframe = pd.DataFrame(predicted_values, columns=['predicted_values'])
+        predictions_dataframe = pd.DataFrame({'predicted_values': predicted_values,
+                                              'predicted_probabilities': predicted_probabilities})
         predictions_dataframe[target_column] = test_y.values
         predictions.append(predictions_dataframe)
+        data_test.append(data.loc[test_id])
 
-    return scores, predictions
+    return scores, predictions, data_test
