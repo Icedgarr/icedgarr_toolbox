@@ -19,3 +19,5 @@ env.list
 *.pytest_cache
 *.xml
 .DS_Store
+
+notebooks/.ipynb_checkpoints/*
