@@ -16,7 +16,6 @@ class TuneModel:
     def tune_model(self, model_class: Model, data, feature_columns, target_column):
         scores_dicts = []
         for params in tqdm(self.parameter_spaces):
-            print(params)
             model = model_class(**params)
             scores, _, _ = self.cross_validator.compute_scores(model, data, feature_columns, target_column)
             mean_scores, std_scores = np.mean(scores), np.std(scores)
