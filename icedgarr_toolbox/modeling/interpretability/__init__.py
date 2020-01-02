@@ -1,1 +1,1 @@
-from icedgarr_toolbox.models.interpretability import get_xgboost_feature_importance
+from icedgarr_toolbox.modeling.interpretability import get_xgboost_feature_importance
