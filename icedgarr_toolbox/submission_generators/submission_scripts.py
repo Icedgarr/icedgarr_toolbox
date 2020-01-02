@@ -16,3 +16,5 @@ def cv_submission(data_train: DataFrame, data_test: DataFrame, splitter: BaseCro
         data_test[f'predicted_{target_column}_{i}'] = estimator.predict(data_test[feature_columns])
         i += 1
     return data_test
+
+
