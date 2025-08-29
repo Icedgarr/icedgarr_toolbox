@@ -3,7 +3,7 @@ import numpy as np
 import scipy
 
 
-class CompareAUROCStatisticalTest:
+class CompareAUROCDeLongTest:
 
     def __init__(self, targets, predicted_proba_1, predicted_proba_2):
         self.target_preds = pd.DataFrame({'targets': targets, 'predicted_proba_1': predicted_proba_1,
@@ -58,6 +58,19 @@ class CompareAUROCStatisticalTest:
 
         covariance = cov_value_neg / len(place_value_neg_1) + cov_value_pos / len(place_value_pos_1)
         return covariance
+    
+    def compute_conf_interval(self, auroc, auroc_variance, alpha=0.05):
+        auroc_std = np.sqrt(auroc_variance)
+        lower_upper_q = np.abs(np.array([0, 1]) - (1 - alpha) / 2)
+
+        conf_interval = scipy.stats.norm.ppf(
+            lower_upper_q,
+            loc=auroc,
+            scale=auc_std)
+
+        conf_interval[conf_interval > 1] = 1
+        conf_interval[conf_interval < 0] = 0
+        return conf_interval
 
     def _compute_cov_value(self, auc_1, place_value_1, auc_2, place_value_2):
         cov_value = ((place_value_1 - auc_1) * (place_value_2 - auc_2)).sum() / (len(place_value_1) - 1)
